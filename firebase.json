@@ -1,0 +1,33 @@
+{
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "split-bill-70928",
+          "appId": "1:300596598138:android:291c4922c2c5f4d3bc32c3",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "split-bill-70928",
+          "configurations": {
+            "android": "1:300596598138:android:291c4922c2c5f4d3bc32c3"
+          }
+        }
+      }
+    }
+  },
+  "emulators": {
+    "singleProjectMode": true,
+
+    "auth": {
+      "host": "0.0.0.0",
+      "port": 9099
+    },
+    "ui": {
+      "enabled": true,
+      "port": 8080
+    }
+  }
+}
