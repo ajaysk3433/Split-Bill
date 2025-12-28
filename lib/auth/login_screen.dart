@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -8,6 +9,45 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  final TextEditingController _emailAddressController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
+  void loginUser() async {
+    try {
+      final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: _emailAddressController.text,
+        password: _passwordController.text,
+      );
+
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('User registered successfully!'),
+          duration: Duration(seconds: 2),
+        ),
+      );
+      Navigator.pushReplacementNamed(context, "/home");
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        print('No user found for that email.');
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('No user found for that email.'),
+            duration: Duration(seconds: 2),
+          ),
+        );
+      } else if (e.code == 'wrong-password') {
+        print('Wrong password provided for that user.');
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Wrong password provided for that user.'),
+            duration: Duration(seconds: 2),
+          ),
+        );
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,6 +66,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 Text("Enter your email and password to login "),
                 SizedBox(height: 15),
                 TextField(
+                  controller: _emailAddressController,
                   decoration: InputDecoration(
                     labelText: "Email",
                     border: OutlineInputBorder(
@@ -35,6 +76,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 SizedBox(height: 15),
                 TextField(
+                  controller: _passwordController,
                   decoration: InputDecoration(
                     labelText: "Password",
                     border: OutlineInputBorder(
@@ -57,7 +99,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     style: ButtonStyle(
                       backgroundColor: WidgetStatePropertyAll(Colors.blue[600]),
                     ),
-                    onPressed: null,
+                    onPressed: loginUser,
 
                     child: Padding(
                       padding: const EdgeInsets.all(18.0),
