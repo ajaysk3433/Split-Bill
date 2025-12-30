@@ -33,7 +33,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
       Navigator.pushReplacementNamed(context, "/home");
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
-        print('The password provided is too weak.');
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('The password provided is too weak.'),
@@ -42,8 +41,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
           ),
         );
       } else if (e.code == 'email-already-in-use') {
-        print('The account already exists for that email.');
-
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('The account already exists for that email.'),

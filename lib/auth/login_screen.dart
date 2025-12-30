@@ -14,7 +14,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   void loginUser() async {
     try {
-      final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: _emailAddressController.text,
         password: _passwordController.text,
       );
@@ -29,7 +29,6 @@ class _LoginScreenState extends State<LoginScreen> {
       Navigator.pushReplacementNamed(context, "/home");
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
-        print('No user found for that email.');
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('No user found for that email.'),
@@ -37,7 +36,6 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
         );
       } else if (e.code == 'wrong-password') {
-        print('Wrong password provided for that user.');
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Wrong password provided for that user.'),
